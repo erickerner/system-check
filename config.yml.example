@@ -1,0 +1,19 @@
+# Copy this file to config.yml and configure as appropriate.
+#
+#
+
+# Root directory of application
+root: /path/to/system-check
+
+# Commands to be executed
+commands:
+  - 'df -h'
+  - uptime
+  - 'free -m'
+  - ps
+  - w
+
+# Contact list; use fully-qualified email addresses
+contacts:
+  - email@domain.ext
+
