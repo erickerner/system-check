@@ -1,6 +1,6 @@
 # File: mail.pl
-#   This script mails a file to a list of recipients. It includes the file
-#   contents in the email body, and also attaches the file to the email.
+#   Mail a file to a list of recipients. It includes the file contents in the
+#   email body, and also attaches the file to the email.
 #
 # Use: perl mail.pl "<subject>" <filepath> <email1,email2,...> (<from>)
 #
@@ -9,30 +9,20 @@
 use MIME::Lite;
 use strict;
 
-# -----------------------------------------------------------------------------
-# Exit if any amount of command line args other than 2.
-# http://perldoc.perl.org/perlvar.html
-#   Unlike C, Perl does _not_ store program name in @ARGV[0].
-#   So, $#ARGV is generally 1 less than the actual size of @ARGV
-#   0 args => $#ARGV == -1
-#   1 arg  => $#ARGV == 0
+# Required arguments and message of misuse.
 unless ($#ARGV == 2 || $#ARGV == 3) { # unless 3|4 args
 	print "\nUsage: perl mail.pl \"<subject>\" <filepath> <email1,email2,...> (<from>)\n\n";
 	print "\nFirst arg is quoted subject.";
 	print "\n\nSecond arg is path to TEXT file to email to list of addresses.";
 	print "\n\nThird arg is comma-separated list of recipient email addresses.";
 	print "\n\tDo NOT use spaces between addresses.";
-	print "\n\tAddresses MUST be qualified if they are not USGS addresses.";
-	print "\n\tThis script appends NO extensions.";
 	print "\n\n(Optional) Fourth arg is sender address.";
 	print "\n\tSender will be username executing this script if left unspecified";
 	print "\n\n";
 	exit 1;
 }
 
-# Grab command line args
-# http://perldoc.perl.org/functions/shift.html
-#   Equivalent to `shift @ARGV` outside subroutines
+# Grab command line args.
 my $subject = shift;
 my $path = shift;
 my $to = shift;
@@ -55,7 +45,7 @@ while (<$file>) {
 	$content .= $_;
 }
 
-# Add some separation between inline content and attached file
+# Add visual separation between inline content and attached file
 $content .= "\n\n\n########################################" .
 	"\n    Attachment of above information" .
 	"\n########################################\n";
