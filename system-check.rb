@@ -24,10 +24,15 @@ end
 # =============================================================================
 # Environment/location helper
 # =============================================================================
-config = YAML::load_file(File.join(File.dirname(File.expand_path(__FILE__)), 'config.yml'))
-root = config["root"]
-commands = config["commands"]
-contacts = config["contacts"]
+if File.exists? 'config.yml'
+	config = YAML::load_file(File.join(File.dirname(File.expand_path(__FILE__)), 'config.yml'))
+	root = config["root"]
+	commands = config["commands"]
+	contacts = config["contacts"]
+else
+	puts "Missing config.yml. Use config.yml.example as a template."
+	exit
+end
 
 # =============================================================================
 # Logger helper
@@ -62,12 +67,18 @@ os.puts "Archive: #{outfile}"
 log.puts "I| Executing commands and writing results to #{outfile}"
 
 # Execute command and write results to report unless line is a comment or blank
-# TODO: Handle error if command is not found or other error encountered.
 commands.each do |c|
-	os.puts "\n# ============================================================================="
-	os.puts "# #{c}"
-	os.puts "# ============================================================================="
-	os.puts `#{c}`
+	begin
+		os.puts "\n# ============================================================================="
+		os.puts "# #{c}"
+		os.puts "# ============================================================================="
+		os.puts `#{c}`
+	rescue StandardError => e
+		message = "Error executing [#{c}]"
+		log.puts "E| #{message}"
+		os.puts message
+		puts message
+	end
 end
 
 os.close
