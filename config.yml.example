@@ -6,12 +6,13 @@
 root: /path/to/system-check
 
 # Commands to be executed
+# Use quotes if commands have arguments
 commands:
-  - 'df -h'
   - uptime
   - 'free -m'
-  - ps
   - w
+  - ps
+  - 'df -h'
 
 # Contact list; use fully-qualified email addresses
 contacts:
